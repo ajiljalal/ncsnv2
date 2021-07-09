@@ -305,11 +305,11 @@ class ConvMeanPool(nn.Module):
                 nn.ZeroPad2d((1, 0, 1, 0)),
                 conv
             )
+        self.avg = nn.AvgPool2d( kernel_size=2 )
 
     def forward(self, inputs):
         output = self.conv(inputs)
-        output = sum([output[:, :, ::2, ::2], output[:, :, 1::2, ::2],
-                      output[:, :, ::2, 1::2], output[:, :, 1::2, 1::2]]) / 4.
+        output = self.avg( output )
         return output
 
 class MeanPoolConv(nn.Module):
